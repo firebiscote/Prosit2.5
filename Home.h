@@ -8,7 +8,6 @@ namespace Prosit25 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
 	/// <summary>
 	/// Description résumée de Home
 	/// </summary>
@@ -31,9 +30,23 @@ namespace Prosit25 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::PictureBox^ image1;
-	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::Button^ button2;
+	private: System::Windows::Forms::PictureBox^ pctBox;
+	private: System::Windows::Forms::Button^ btnFirst;
+	private: System::Windows::Forms::Button^ btnPrevious;
+	private: System::Windows::Forms::Button^ btnNext;
+	private: System::Windows::Forms::Button^ btnLast;
+	private: System::Windows::Forms::GroupBox^ imageSection;
+	private: System::Windows::Forms::GroupBox^ processSection;
+	private: System::Windows::Forms::GroupBox^ imageSettingSection;
+	private: System::Windows::Forms::Button^ process;
+	private: System::Windows::Forms::CheckBox^ doDelete;
+	private: System::Windows::Forms::CheckBox^ doCopy;
+	private: System::Windows::Forms::Button^ targetFind;
+	private: System::Windows::Forms::Button^ sourceFind;
+	private: System::Windows::Forms::TextBox^ targetTextBox;
+	private: System::Windows::Forms::TextBox^ sourceTextBox;
+	private: System::Windows::Forms::Label^ targetLabel;
+	private: System::Windows::Forms::Label^ sourceLabel;
 
 	protected:
 
@@ -42,6 +55,8 @@ namespace Prosit25 {
 		/// Variable nécessaire au concepteur.
 		/// </summary>
 		System::ComponentModel::Container ^components;
+		array<Bitmap^>^ images;
+		   int^ index;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -49,62 +64,218 @@ namespace Prosit25 {
 		/// le contenu de cette méthode avec l'éditeur de code.
 		/// </summary>
 		void InitializeComponent(void) {
-			this->image1 = (gcnew System::Windows::Forms::PictureBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->button2 = (gcnew System::Windows::Forms::Button());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->image1))->BeginInit();
+			this->pctBox = (gcnew System::Windows::Forms::PictureBox());
+			this->btnFirst = (gcnew System::Windows::Forms::Button());
+			this->btnPrevious = (gcnew System::Windows::Forms::Button());
+			this->btnNext = (gcnew System::Windows::Forms::Button());
+			this->btnLast = (gcnew System::Windows::Forms::Button());
+			this->imageSection = (gcnew System::Windows::Forms::GroupBox());
+			this->processSection = (gcnew System::Windows::Forms::GroupBox());
+			this->doDelete = (gcnew System::Windows::Forms::CheckBox());
+			this->doCopy = (gcnew System::Windows::Forms::CheckBox());
+			this->imageSettingSection = (gcnew System::Windows::Forms::GroupBox());
+			this->targetFind = (gcnew System::Windows::Forms::Button());
+			this->sourceFind = (gcnew System::Windows::Forms::Button());
+			this->targetTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->sourceTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->targetLabel = (gcnew System::Windows::Forms::Label());
+			this->sourceLabel = (gcnew System::Windows::Forms::Label());
+			this->process = (gcnew System::Windows::Forms::Button());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->BeginInit();
+			this->imageSection->SuspendLayout();
+			this->processSection->SuspendLayout();
+			this->imageSettingSection->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// image1
+			// pctBox
 			// 
-			Bitmap^ myImage;
-			myImage = gcnew Bitmap(L"C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\a.jpg", true);
-			this->image1->Image = myImage;
-			this->image1->Location = System::Drawing::Point(240, 50);
-			this->image1->Name = L"image1";
-			this->image1->Size = System::Drawing::Size(600, 400);
-			this->image1->SizeMode = PictureBoxSizeMode::StretchImage;
-			this->image1->TabIndex = 0;
-			this->image1->TabStop = false;
+			this->pctBox->Location = System::Drawing::Point(240, 21);
+			this->pctBox->Name = L"pctBox";
+			this->pctBox->Size = System::Drawing::Size(600, 300);
+			this->pctBox->TabIndex = 0;
+			this->pctBox->TabStop = false;
 			// 
-			// button1
+			// btnFirst
 			// 
-			this->button1->Location = System::Drawing::Point(145, 200);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(51, 98);
-			this->button1->TabIndex = 1;
-			this->button1->Text = L"<";
-			this->button1->UseVisualStyleBackColor = true;
-			this->button1->Click += gcnew System::EventHandler(this, &Home::button1_Click);
+			this->btnFirst->Location = System::Drawing::Point(148, 141);
+			this->btnFirst->Name = L"btnFirst";
+			this->btnFirst->Size = System::Drawing::Size(40, 60);
+			this->btnFirst->TabIndex = 1;
+			this->btnFirst->Text = L"<<";
+			this->btnFirst->UseVisualStyleBackColor = true;
+			this->btnFirst->Click += gcnew System::EventHandler(this, &Home::btnFirst_Click);
 			// 
-			// button2
+			// btnPrevious
 			// 
-			this->button2->Location = System::Drawing::Point(879, 198);
-			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(53, 100);
-			this->button2->TabIndex = 2;
-			this->button2->Text = L">";
-			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &Home::button2_Click);
+			this->btnPrevious->Location = System::Drawing::Point(194, 131);
+			this->btnPrevious->Name = L"btnPrevious";
+			this->btnPrevious->Size = System::Drawing::Size(40, 80);
+			this->btnPrevious->TabIndex = 2;
+			this->btnPrevious->Text = L"<";
+			this->btnPrevious->UseVisualStyleBackColor = true;
+			this->btnPrevious->Click += gcnew System::EventHandler(this, &Home::btnPrevious_Click);
+			// 
+			// btnNext
+			// 
+			this->btnNext->Location = System::Drawing::Point(846, 131);
+			this->btnNext->Name = L"btnNext";
+			this->btnNext->Size = System::Drawing::Size(40, 80);
+			this->btnNext->TabIndex = 3;
+			this->btnNext->Text = L">";
+			this->btnNext->UseVisualStyleBackColor = true;
+			// 
+			// btnLast
+			// 
+			this->btnLast->Location = System::Drawing::Point(892, 141);
+			this->btnLast->Name = L"btnLast";
+			this->btnLast->Size = System::Drawing::Size(40, 60);
+			this->btnLast->TabIndex = 4;
+			this->btnLast->Text = L">>";
+			this->btnLast->UseVisualStyleBackColor = true;
+			// 
+			// imageSection
+			// 
+			this->imageSection->Controls->Add(this->btnLast);
+			this->imageSection->Controls->Add(this->btnFirst);
+			this->imageSection->Controls->Add(this->pctBox);
+			this->imageSection->Controls->Add(this->btnPrevious);
+			this->imageSection->Controls->Add(this->btnNext);
+			this->imageSection->Location = System::Drawing::Point(12, 12);
+			this->imageSection->Name = L"imageSection";
+			this->imageSection->Size = System::Drawing::Size(1042, 341);
+			this->imageSection->TabIndex = 5;
+			this->imageSection->TabStop = false;
+			this->imageSection->Text = L"Image viewer";
+			// 
+			// processSection
+			// 
+			this->processSection->Controls->Add(this->doDelete);
+			this->processSection->Controls->Add(this->doCopy);
+			this->processSection->Location = System::Drawing::Point(12, 359);
+			this->processSection->Name = L"processSection";
+			this->processSection->Size = System::Drawing::Size(234, 112);
+			this->processSection->TabIndex = 6;
+			this->processSection->TabStop = false;
+			this->processSection->Text = L"Process section";
+			// 
+			// doDelete
+			// 
+			this->doDelete->AutoSize = true;
+			this->doDelete->Location = System::Drawing::Point(117, 49);
+			this->doDelete->Name = L"doDelete";
+			this->doDelete->Size = System::Drawing::Size(71, 21);
+			this->doDelete->TabIndex = 1;
+			this->doDelete->Text = L"Delete";
+			this->doDelete->UseVisualStyleBackColor = true;
+			// 
+			// doCopy
+			// 
+			this->doCopy->AutoSize = true;
+			this->doCopy->Location = System::Drawing::Point(33, 49);
+			this->doCopy->Name = L"doCopy";
+			this->doCopy->Size = System::Drawing::Size(62, 21);
+			this->doCopy->TabIndex = 0;
+			this->doCopy->Text = L"Copy";
+			this->doCopy->UseVisualStyleBackColor = true;
+			// 
+			// imageSettingSection
+			// 
+			this->imageSettingSection->Controls->Add(this->targetFind);
+			this->imageSettingSection->Controls->Add(this->sourceFind);
+			this->imageSettingSection->Controls->Add(this->targetTextBox);
+			this->imageSettingSection->Controls->Add(this->sourceTextBox);
+			this->imageSettingSection->Controls->Add(this->targetLabel);
+			this->imageSettingSection->Controls->Add(this->sourceLabel);
+			this->imageSettingSection->Location = System::Drawing::Point(252, 359);
+			this->imageSettingSection->Name = L"imageSettingSection";
+			this->imageSettingSection->Size = System::Drawing::Size(600, 112);
+			this->imageSettingSection->TabIndex = 7;
+			this->imageSettingSection->TabStop = false;
+			this->imageSettingSection->Text = L"Image setting section";
+			// 
+			// targetFind
+			// 
+			this->targetFind->Location = System::Drawing::Point(484, 68);
+			this->targetFind->Name = L"targetFind";
+			this->targetFind->Size = System::Drawing::Size(75, 23);
+			this->targetFind->TabIndex = 5;
+			this->targetFind->Text = L"Find...";
+			this->targetFind->UseVisualStyleBackColor = true;
+			// 
+			// sourceFind
+			// 
+			this->sourceFind->Location = System::Drawing::Point(484, 31);
+			this->sourceFind->Name = L"sourceFind";
+			this->sourceFind->Size = System::Drawing::Size(75, 23);
+			this->sourceFind->TabIndex = 4;
+			this->sourceFind->Text = L"Find...";
+			this->sourceFind->UseVisualStyleBackColor = true;
+			// 
+			// targetTextBox
+			// 
+			this->targetTextBox->Location = System::Drawing::Point(94, 68);
+			this->targetTextBox->Name = L"targetTextBox";
+			this->targetTextBox->Size = System::Drawing::Size(384, 22);
+			this->targetTextBox->TabIndex = 3;
+			// 
+			// sourceTextBox
+			// 
+			this->sourceTextBox->Location = System::Drawing::Point(94, 31);
+			this->sourceTextBox->Name = L"sourceTextBox";
+			this->sourceTextBox->Size = System::Drawing::Size(384, 22);
+			this->sourceTextBox->TabIndex = 2;
+			// 
+			// targetLabel
+			// 
+			this->targetLabel->AutoSize = true;
+			this->targetLabel->Location = System::Drawing::Point(17, 71);
+			this->targetLabel->Name = L"targetLabel";
+			this->targetLabel->Size = System::Drawing::Size(46, 17);
+			this->targetLabel->TabIndex = 1;
+			this->targetLabel->Text = L"Target :";
+			// 
+			// sourceLabel
+			// 
+			this->sourceLabel->AutoSize = true;
+			this->sourceLabel->Location = System::Drawing::Point(17, 34);
+			this->sourceLabel->Name = L"sourceLabel";
+			this->sourceLabel->Size = System::Drawing::Size(46, 17);
+			this->sourceLabel->TabIndex = 0;
+			this->sourceLabel->Text = L"Source :";
+			// 
+			// process
+			// 
+			this->process->Location = System::Drawing::Point(904, 390);
+			this->process->Name = L"process";
+			this->process->Size = System::Drawing::Size(116, 55);
+			this->process->TabIndex = 8;
+			this->process->Text = L"Process";
+			this->process->UseVisualStyleBackColor = true;
 			// 
 			// Home
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1080, 720);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->button1);
-			this->Controls->Add(this->image1);
+			this->ClientSize = System::Drawing::Size(1080, 486);
+			this->Controls->Add(this->process);
+			this->Controls->Add(this->imageSettingSection);
+			this->Controls->Add(this->processSection);
+			this->Controls->Add(this->imageSection);
 			this->Name = L"Home";
 			this->Text = L"Home";
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->image1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->EndInit();
+			this->imageSection->ResumeLayout(false);
+			this->processSection->ResumeLayout(false);
+			this->processSection->PerformLayout();
+			this->imageSettingSection->ResumeLayout(false);
+			this->imageSettingSection->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 		Bitmap^ myImage;
 		char image = 'a';
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btnFirst_Click(System::Object^ sender, System::EventArgs^ e) {
 		switch (image) {
 		case 'a': case 'b':
 			image = 'a';
@@ -119,9 +290,9 @@ namespace Prosit25 {
 			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\c.jpg", true);
 			break;
 		}
-		this->image1->Image = myImage;
+		this->pctBox->Image = myImage;
 	}
-	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btnPrevious_Click(System::Object^ sender, System::EventArgs^ e) {
 		switch (image) {
 		case 'a': 
 			image = 'b';
@@ -136,7 +307,7 @@ namespace Prosit25 {
 			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\d.jpg", true);
 			break;
 		}
-		this->image1->Image = myImage;
+		this->pctBox->Image = myImage;
 	}
-	};
+};
 }
