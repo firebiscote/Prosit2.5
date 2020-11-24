@@ -1,7 +1,6 @@
 #pragma once
 
 namespace Prosit25 {
-
 	#define SIZE_MODE PictureBoxSizeMode::CenterImage;
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -9,62 +8,45 @@ namespace Prosit25 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	/// <summary>
-	/// Description résumée de Home
-	/// </summary>
+
 	public ref class Home : public System::Windows::Forms::Form {
 	public:
 		Home(void) {
 			InitializeComponent();
-			//
-			//TODO: ajoutez ici le code du constructeur
-			//
 		}
 
 	protected:
-		/// <summary>
-		/// Nettoyage des ressources utilisées.
-		/// </summary>
 		~Home() {
 			if (components) {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::PictureBox^ pctBox;
-	private: System::Windows::Forms::Button^ btnFirst;
-	private: System::Windows::Forms::Button^ btnPrevious;
-	private: System::Windows::Forms::Button^ btnNext;
-	private: System::Windows::Forms::Button^ btnLast;
-	private: System::Windows::Forms::GroupBox^ imageSection;
-	private: System::Windows::Forms::GroupBox^ processSection;
-	private: System::Windows::Forms::GroupBox^ imageSettingSection;
-	private: System::Windows::Forms::Button^ process;
-	private: System::Windows::Forms::CheckBox^ doDelete;
-	private: System::Windows::Forms::CheckBox^ doCopy;
-	private: System::Windows::Forms::Button^ targetFind;
-	private: System::Windows::Forms::Button^ sourceFind;
-	private: System::Windows::Forms::TextBox^ targetTextBox;
-	private: System::Windows::Forms::TextBox^ sourceTextBox;
-	private: System::Windows::Forms::Label^ targetLabel;
-	private: System::Windows::Forms::Label^ sourceLabel;
-	private: System::Windows::Forms::FolderBrowserDialog^ targetFolder;
-	private: System::Windows::Forms::OpenFileDialog^ sourceFile;
-
-	protected:
 
 	private:
-		/// <summary>
-		/// Variable nécessaire au concepteur.
-		/// </summary>
+		System::Windows::Forms::PictureBox^ pctBox;
+		System::Windows::Forms::Button^ btnFirst;
+		System::Windows::Forms::Button^ btnPrevious;
+		System::Windows::Forms::Button^ btnNext;
+		System::Windows::Forms::Button^ btnLast;
+		System::Windows::Forms::GroupBox^ imageSection;
+		System::Windows::Forms::GroupBox^ processSection;
+		System::Windows::Forms::GroupBox^ imageSettingSection;
+		System::Windows::Forms::Button^ process;
+		System::Windows::Forms::CheckBox^ doDelete;
+		System::Windows::Forms::CheckBox^ doCopy;
+		System::Windows::Forms::Button^ targetFind;
+		System::Windows::Forms::Button^ sourceFind;
+		System::Windows::Forms::TextBox^ targetTextBox;
+		System::Windows::Forms::TextBox^ sourceTextBox;
+		System::Windows::Forms::Label^ targetLabel;
+		System::Windows::Forms::Label^ sourceLabel;
+		System::Windows::Forms::FolderBrowserDialog^ targetFolder;
+		System::Windows::Forms::OpenFileDialog^ sourceFile;
 		System::ComponentModel::Container ^components;
 		int index = 0;
 		int nFile = 0;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
-		/// le contenu de cette méthode avec l'éditeur de code.
-		/// </summary>
 		void InitializeComponent(void) {
 			this->pctBox = (gcnew System::Windows::Forms::PictureBox());
 			this->btnFirst = (gcnew System::Windows::Forms::Button());
