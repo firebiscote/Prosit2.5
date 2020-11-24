@@ -12,7 +12,6 @@ namespace Prosit25 {
 	/// <summary>
 	/// Description résumée de Home
 	/// </summary>
-	/// </summary>
 	public ref class Home : public System::Windows::Forms::Form {
 	public:
 		Home(void) {
@@ -281,7 +280,7 @@ namespace Prosit25 {
 			this->Controls->Add(this->processSection);
 			this->Controls->Add(this->imageSection);
 			this->Name = L"Home";
-			this->Text = L"Home";
+			this->Text = L"Image software";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->EndInit();
 			this->imageSection->ResumeLayout(false);
 			this->processSection->ResumeLayout(false);
