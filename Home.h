@@ -47,6 +47,8 @@ namespace Prosit25 {
 	private: System::Windows::Forms::TextBox^ sourceTextBox;
 	private: System::Windows::Forms::Label^ targetLabel;
 	private: System::Windows::Forms::Label^ sourceLabel;
+	private: System::Windows::Forms::FolderBrowserDialog^ folderBrowser;
+	private: System::Windows::Forms::OpenFileDialog^ sourceFile;
 
 	protected:
 
@@ -81,6 +83,8 @@ namespace Prosit25 {
 			this->targetLabel = (gcnew System::Windows::Forms::Label());
 			this->sourceLabel = (gcnew System::Windows::Forms::Label());
 			this->process = (gcnew System::Windows::Forms::Button());
+			this->folderBrowser = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->sourceFile = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->BeginInit();
 			this->imageSection->SuspendLayout();
 			this->processSection->SuspendLayout();
@@ -201,6 +205,7 @@ namespace Prosit25 {
 			this->targetFind->TabIndex = 5;
 			this->targetFind->Text = L"Find...";
 			this->targetFind->UseVisualStyleBackColor = true;
+			this->targetFind->Click += gcnew System::EventHandler(this, &Home::targetFind_Click);
 			// 
 			// sourceFind
 			// 
@@ -210,6 +215,7 @@ namespace Prosit25 {
 			this->sourceFind->TabIndex = 4;
 			this->sourceFind->Text = L"Find...";
 			this->sourceFind->UseVisualStyleBackColor = true;
+			this->sourceFind->Click += gcnew System::EventHandler(this, &Home::sourceFind_Click);
 			// 
 			// targetTextBox
 			// 
@@ -230,7 +236,7 @@ namespace Prosit25 {
 			this->targetLabel->AutoSize = true;
 			this->targetLabel->Location = System::Drawing::Point(17, 71);
 			this->targetLabel->Name = L"targetLabel";
-			this->targetLabel->Size = System::Drawing::Size(46, 17);
+			this->targetLabel->Size = System::Drawing::Size(58, 17);
 			this->targetLabel->TabIndex = 1;
 			this->targetLabel->Text = L"Target :";
 			// 
@@ -239,7 +245,7 @@ namespace Prosit25 {
 			this->sourceLabel->AutoSize = true;
 			this->sourceLabel->Location = System::Drawing::Point(17, 34);
 			this->sourceLabel->Name = L"sourceLabel";
-			this->sourceLabel->Size = System::Drawing::Size(46, 17);
+			this->sourceLabel->Size = System::Drawing::Size(61, 17);
 			this->sourceLabel->TabIndex = 0;
 			this->sourceLabel->Text = L"Source :";
 			// 
@@ -251,6 +257,13 @@ namespace Prosit25 {
 			this->process->TabIndex = 8;
 			this->process->Text = L"Process";
 			this->process->UseVisualStyleBackColor = true;
+			// 
+			// sourceFile
+			// 
+			this->sourceFile->FileName = L"source File";
+			this->sourceFile->InitialDirectory = L"C:\\";
+			this->sourceFile->DefaultExt = L"jpg";
+			this->sourceFile->Filter = L"Image files (*.JPG/*.PNG/*.BMP)|*.JPG;*.PNG;*.BMP|All files (*.*)|*.*";
 			// 
 			// Home
 			// 
@@ -308,6 +321,16 @@ namespace Prosit25 {
 			break;
 		}
 		this->pctBox->Image = myImage;
+	}
+	private: System::Void sourceFind_Click(System::Object^ sender, System::EventArgs^ e) {
+		sourceFile->ShowDialog();
+		sourceTextBox->Text = sourceFile->FileName;
+		/*folderBrowser->ShowDialog();
+		sourceTextBox->Text = folderBrowser->SelectedPath;*/
+	}
+	private: System::Void targetFind_Click(System::Object^ sender, System::EventArgs^ e) {
+		folderBrowser->ShowDialog();
+		targetTextBox->Text = folderBrowser->SelectedPath;
 	}
 };
 }
