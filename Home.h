@@ -57,8 +57,8 @@ namespace Prosit25 {
 		/// Variable nécessaire au concepteur.
 		/// </summary>
 		System::ComponentModel::Container ^components;
-		array<Bitmap^>^ images;
-		   int^ index;
+		int index = 0;
+		int nFile = 0;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -127,6 +127,7 @@ namespace Prosit25 {
 			this->btnNext->TabIndex = 3;
 			this->btnNext->Text = L">";
 			this->btnNext->UseVisualStyleBackColor = true;
+			this->btnNext->Click += gcnew System::EventHandler(this, &Home::btnNext_Click);
 			// 
 			// btnLast
 			// 
@@ -136,6 +137,7 @@ namespace Prosit25 {
 			this->btnLast->TabIndex = 4;
 			this->btnLast->Text = L">>";
 			this->btnLast->UseVisualStyleBackColor = true;
+			this->btnLast->Click += gcnew System::EventHandler(this, &Home::btnLast_Click);
 			// 
 			// imageSection
 			// 
@@ -260,10 +262,10 @@ namespace Prosit25 {
 			// 
 			// sourceFile
 			// 
-			this->sourceFile->FileName = L"source File";
-			this->sourceFile->InitialDirectory = L"C:\\";
-			this->sourceFile->DefaultExt = L"jpg";
+			this->sourceFile->FileName = L"";
 			this->sourceFile->Filter = L"Image files (*.JPG/*.PNG/*.BMP)|*.JPG;*.PNG;*.BMP|All files (*.*)|*.*";
+			this->sourceFile->InitialDirectory = L"C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\";
+			this->sourceFile->Multiselect = true;
 			// 
 			// Home
 			// 
@@ -286,47 +288,41 @@ namespace Prosit25 {
 
 		}
 #pragma endregion
-		Bitmap^ myImage;
-		char image = 'a';
 	private: System::Void btnFirst_Click(System::Object^ sender, System::EventArgs^ e) {
-		switch (image) {
-		case 'a': case 'b':
-			image = 'a';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\a.jpg", true);
-			break;
-		case 'c':
-			image = 'b';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\b.jpg", true);
-			break;
-		case 'd':
-			image = 'c';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\c.jpg", true);
-			break;
+		if (this->nFile != 0) {
+			this->index = 0;
+			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
-		this->pctBox->Image = myImage;
 	}
 	private: System::Void btnPrevious_Click(System::Object^ sender, System::EventArgs^ e) {
-		switch (image) {
-		case 'a': 
-			image = 'b';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\b.jpg", true);
-			break;
-		case 'b':
-			image = 'c';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\c.jpg", true);
-			break;
-		case 'c': case 'd':
-			image = 'd';
-			myImage = gcnew Bitmap("C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\d.jpg", true);
-			break;
+		if (this->index != 0 && this->nFile != 0) {
+			this->index--;
+			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
-		this->pctBox->Image = myImage;
+	}
+	private: System::Void btnNext_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (this->index != nFile-1 && this->nFile != 0) {
+			this->index++;
+			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
+		}
+	}
+	private: System::Void btnLast_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (this->nFile != 0) {
+			this->index = this->nFile - 1;
+			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
+		}
 	}
 	private: System::Void sourceFind_Click(System::Object^ sender, System::EventArgs^ e) {
-		sourceFile->ShowDialog();
-		sourceTextBox->Text = sourceFile->FileName;
-		/*folderBrowser->ShowDialog();
-		sourceTextBox->Text = folderBrowser->SelectedPath;*/
+		this->sourceFile->ShowDialog();
+		this->sourceTextBox->Text = sourceFile->FileNames[0];//sourceFile->FileNames[0];
+		this->index = 0;
+		this->nFile = 0;
+		for each (String^ file in sourceFile->FileNames) {
+			this->nFile++;
+		}
+		if (this->sourceFile->FileName != "") {
+			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
+		}
 	}
 	private: System::Void targetFind_Click(System::Object^ sender, System::EventArgs^ e) {
 		folderBrowser->ShowDialog();
