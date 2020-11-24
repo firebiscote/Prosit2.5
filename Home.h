@@ -268,6 +268,7 @@ namespace Prosit25 {
 			this->sourceFile->FileName = L"";
 			this->sourceFile->Filter = L"Image files (*.JPG/*.PNG/*.BMP)|*.JPG;*.PNG;*.BMP|All files (*.*)|*.*";
 			this->sourceFile->InitialDirectory = L"C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\";
+			this->sourceFile->FilterIndex = 2;
 			this->sourceFile->Multiselect = true;
 			// 
 			// Home
@@ -316,13 +317,16 @@ namespace Prosit25 {
 		}
 	}
 	private: System::Void sourceFind_Click(System::Object^ sender, System::EventArgs^ e) {
+		System::String^ tmp = "| ";
 		this->sourceFile->ShowDialog();
-		this->sourceTextBox->Text = this->sourceFile->FileNames[0];//sourceFile->FileNames[0];
 		this->index = 0;
 		this->nFile = 0;
 		for each (String^ file in this->sourceFile->FileNames) {
+			tmp += System::IO::Path::GetFileName(this->sourceFile->FileNames[nFile]);
+			tmp += " | ";
 			this->nFile++;
 		}
+		this->sourceTextBox->Text = tmp;
 		if (this->sourceFile->FileName != "") {
 			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
