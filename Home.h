@@ -47,7 +47,7 @@ namespace Prosit25 {
 	private: System::Windows::Forms::TextBox^ sourceTextBox;
 	private: System::Windows::Forms::Label^ targetLabel;
 	private: System::Windows::Forms::Label^ sourceLabel;
-	private: System::Windows::Forms::FolderBrowserDialog^ folderBrowser;
+	private: System::Windows::Forms::FolderBrowserDialog^ targetFolder;
 	private: System::Windows::Forms::OpenFileDialog^ sourceFile;
 
 	protected:
@@ -59,6 +59,7 @@ namespace Prosit25 {
 		System::ComponentModel::Container ^components;
 		int index = 0;
 		int nFile = 0;
+		array<System::String^>^ images;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -83,7 +84,7 @@ namespace Prosit25 {
 			this->targetLabel = (gcnew System::Windows::Forms::Label());
 			this->sourceLabel = (gcnew System::Windows::Forms::Label());
 			this->process = (gcnew System::Windows::Forms::Button());
-			this->folderBrowser = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->targetFolder = (gcnew System::Windows::Forms::FolderBrowserDialog());
 			this->sourceFile = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->BeginInit();
 			this->imageSection->SuspendLayout();
@@ -259,6 +260,7 @@ namespace Prosit25 {
 			this->process->TabIndex = 8;
 			this->process->Text = L"Process";
 			this->process->UseVisualStyleBackColor = true;
+			this->process->Click += gcnew System::EventHandler(this, &Home::process_Click);
 			// 
 			// sourceFile
 			// 
@@ -314,10 +316,10 @@ namespace Prosit25 {
 	}
 	private: System::Void sourceFind_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->sourceFile->ShowDialog();
-		this->sourceTextBox->Text = sourceFile->FileNames[0];//sourceFile->FileNames[0];
+		this->sourceTextBox->Text = this->sourceFile->FileNames[0];//sourceFile->FileNames[0];
 		this->index = 0;
 		this->nFile = 0;
-		for each (String^ file in sourceFile->FileNames) {
+		for each (String^ file in this->sourceFile->FileNames) {
 			this->nFile++;
 		}
 		if (this->sourceFile->FileName != "") {
@@ -325,8 +327,29 @@ namespace Prosit25 {
 		}
 	}
 	private: System::Void targetFind_Click(System::Object^ sender, System::EventArgs^ e) {
-		folderBrowser->ShowDialog();
-		targetTextBox->Text = folderBrowser->SelectedPath;
+		this->targetFolder->ShowDialog();
+		this->targetTextBox->Text = this->targetFolder->SelectedPath;
+	}
+	private: System::Void process_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (this->doCopy->Checked == true) {
+			if (this->sourceTextBox->Text != "" && this->targetTextBox->Text != "") {
+				for (int i = 0; i < this->nFile; i++) {
+					System::String^ tmp = System::IO::Path::GetFileName(this->sourceFile->FileNames[i]);
+					System::IO::File::Copy(this->sourceFile->FileNames[i], this->targetFolder->SelectedPath + "\\Copy " + tmp);
+				}
+			}
+		}
+		if (this->doDelete->Checked == true) {
+			if (this->sourceTextBox->Text != "") {
+				delete this->pctBox->Image;
+				this->pctBox->Image = nullptr;
+				for (int i = 0; i < this->nFile; i++) {
+					System::IO::File::Delete(this->sourceFile->FileNames[i]);
+				}
+				this->nFile = 0;
+				this->index = 0;
+			}
+		}
 	}
 };
 }
