@@ -42,12 +42,14 @@ namespace Prosit25 {
 		System::Windows::Forms::Label^ sourceLabel;
 		System::Windows::Forms::FolderBrowserDialog^ targetFolder;
 		System::Windows::Forms::OpenFileDialog^ sourceFile;
-		System::ComponentModel::Container ^components;
+		System::Windows::Forms::ErrorProvider^ errorDialog;
+		System::ComponentModel::IContainer^ components;
 		int index = 0;
 		int nFile = 0;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void) {
+			this->components = (gcnew System::ComponentModel::Container());
 			this->pctBox = (gcnew System::Windows::Forms::PictureBox());
 			this->btnFirst = (gcnew System::Windows::Forms::Button());
 			this->btnPrevious = (gcnew System::Windows::Forms::Button());
@@ -67,10 +69,12 @@ namespace Prosit25 {
 			this->process = (gcnew System::Windows::Forms::Button());
 			this->targetFolder = (gcnew System::Windows::Forms::FolderBrowserDialog());
 			this->sourceFile = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->errorDialog = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pctBox))->BeginInit();
 			this->imageSection->SuspendLayout();
 			this->processSection->SuspendLayout();
 			this->imageSettingSection->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorDialog))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// pctBox
@@ -80,7 +84,7 @@ namespace Prosit25 {
 			this->pctBox->Size = System::Drawing::Size(600, 300);
 			this->pctBox->TabIndex = 0;
 			this->pctBox->TabStop = false;
-			this->pctBox->SizeMode = SIZE_MODE;
+			this->pctBox->SizeMode = Prosit25::SIZE_MODE;
 			// 
 			// btnFirst
 			// 
@@ -246,11 +250,14 @@ namespace Prosit25 {
 			// 
 			// sourceFile
 			// 
-			this->sourceFile->FileName = L"";
 			this->sourceFile->Filter = L"Image files (*.JPG/*.PNG/*.BMP)|*.JPG;*.PNG;*.BMP|All files (*.*)|*.*";
-			this->sourceFile->InitialDirectory = L"C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\";
 			this->sourceFile->FilterIndex = 2;
+			this->sourceFile->InitialDirectory = L"C:\\Users\\maxim\\Documents\\Aprog\\C-C++\\C++\\testFichierImage\\";
 			this->sourceFile->Multiselect = true;
+			// 
+			// errorDialog
+			// 
+			this->errorDialog->ContainerControl = this;
 			// 
 			// Home
 			// 
@@ -269,6 +276,7 @@ namespace Prosit25 {
 			this->processSection->PerformLayout();
 			this->imageSettingSection->ResumeLayout(false);
 			this->imageSettingSection->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorDialog))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -279,25 +287,30 @@ namespace Prosit25 {
 			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
 	}
+
 	private: System::Void btnPrevious_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->index != 0 && this->nFile != 0) {
 			this->index--;
 			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
 	}
+
 	private: System::Void btnNext_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->index != nFile-1 && this->nFile != 0) {
 			this->index++;
 			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
 	}
+
 	private: System::Void btnLast_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (this->nFile != 0) {
 			this->index = this->nFile - 1;
 			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 		}
 	}
+
 	private: System::Void sourceFind_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->errorDialog->Clear();
 		System::String^ tmp = "| ";
 		this->sourceFile->ShowDialog();
 		this->index = 0;
@@ -308,33 +321,51 @@ namespace Prosit25 {
 			this->nFile++;
 		}
 		this->sourceTextBox->Text = tmp;
-		if (this->sourceFile->FileName != "") {
-			this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
+		try {
+			if (this->sourceFile->FileName != "") {
+				this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
+			}
+		}
+		catch (System::ArgumentException^ e) {
+			this->errorDialog->SetError(this->sourceFind, "Ceci n'est pas image");
+			this->index = 0;
+			this->nFile = 0;
 		}
 	}
+
 	private: System::Void targetFind_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->errorDialog->Clear();
 		this->targetFolder->ShowDialog();
 		this->targetTextBox->Text = this->targetFolder->SelectedPath;
 	}
+	
 	private: System::Void process_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (this->doCopy->Checked == true) {
-			if (this->sourceTextBox->Text != "" && this->targetTextBox->Text != "") {
-				for (int i = 0; i < this->nFile; i++) {
-					System::String^ tmp = System::IO::Path::GetFileName(this->sourceFile->FileNames[i]);
-					System::IO::File::Copy(this->sourceFile->FileNames[i], this->targetFolder->SelectedPath + "\\Copy " + tmp);
+		try {
+			if (this->doCopy->Checked == true) {
+				if (this->sourceTextBox->Text != "" && this->targetTextBox->Text != "") {
+					for (int i = 0; i < this->nFile; i++) {
+						System::String^ tmp = System::IO::Path::GetFileName(this->sourceFile->FileNames[i]);
+						System::IO::File::Copy(this->sourceFile->FileNames[i], this->targetFolder->SelectedPath + "\\Copy " + tmp);
+					}
+				}
+			}
+			if (this->doDelete->Checked == true) {
+				if (this->sourceTextBox->Text != "") {
+					delete this->pctBox->Image;
+					this->pctBox->Image = nullptr;
+					for (int i = 0; i < this->nFile; i++) {
+						System::IO::File::Delete(this->sourceFile->FileNames[i]);
+					}
+					this->nFile = 0;
+					this->index = 0;
 				}
 			}
 		}
-		if (this->doDelete->Checked == true) {
-			if (this->sourceTextBox->Text != "") {
-				delete this->pctBox->Image;
-				this->pctBox->Image = nullptr;
-				for (int i = 0; i < this->nFile; i++) {
-					System::IO::File::Delete(this->sourceFile->FileNames[i]);
-				}
-				this->nFile = 0;
-				this->index = 0;
-			}
+		catch (System::UnauthorizedAccessException^ e) {
+			this->errorDialog->SetError(this->targetFind, "Directory not found");
+		}
+		catch (System::IO::IOException^ e) {
+			this->errorDialog->SetError(this->process, "Files already copied");
 		}
 	}
 };
