@@ -2,6 +2,7 @@
 
 namespace Prosit25 {
 
+	#define SIZE_MODE PictureBoxSizeMode::CenterImage;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -59,7 +60,6 @@ namespace Prosit25 {
 		System::ComponentModel::Container ^components;
 		int index = 0;
 		int nFile = 0;
-		array<System::String^>^ images;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -99,6 +99,7 @@ namespace Prosit25 {
 			this->pctBox->Size = System::Drawing::Size(600, 300);
 			this->pctBox->TabIndex = 0;
 			this->pctBox->TabStop = false;
+			this->pctBox->SizeMode = SIZE_MODE;
 			// 
 			// btnFirst
 			// 
