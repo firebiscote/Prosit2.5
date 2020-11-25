@@ -1,7 +1,6 @@
 #pragma once
 
 namespace Prosit25 {
-	#define SIZE_MODE PictureBoxSizeMode::CenterImage;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -84,7 +83,7 @@ namespace Prosit25 {
 			this->pctBox->Size = System::Drawing::Size(600, 300);
 			this->pctBox->TabIndex = 0;
 			this->pctBox->TabStop = false;
-			this->pctBox->SizeMode = Prosit25::SIZE_MODE;
+			this->pctBox->SizeMode = PictureBoxSizeMode::CenterImage;
 			// 
 			// btnFirst
 			// 
