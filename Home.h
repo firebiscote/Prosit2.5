@@ -326,7 +326,7 @@ namespace Prosit25 {
 			}
 		}
 		catch (System::ArgumentException^) {
-			this->errorDialog->SetError(this->sourceFind, "Ceci n'est pas image");
+			this->errorDialog->SetError(this->sourceFind, "It's not an image");
 			this->index = 0;
 			this->nFile = 0;
 		}
