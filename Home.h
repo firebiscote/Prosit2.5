@@ -325,7 +325,7 @@ namespace Prosit25 {
 				this->pctBox->Image = gcnew Bitmap(this->sourceFile->FileNames[this->index], true);
 			}
 		}
-		catch (System::ArgumentException^ e) {
+		catch (System::ArgumentException^) {
 			this->errorDialog->SetError(this->sourceFind, "Ceci n'est pas image");
 			this->index = 0;
 			this->nFile = 0;
@@ -360,10 +360,10 @@ namespace Prosit25 {
 				}
 			}
 		}
-		catch (System::UnauthorizedAccessException^ e) {
+		catch (System::UnauthorizedAccessException^) {
 			this->errorDialog->SetError(this->targetFind, "Directory not found");
 		}
-		catch (System::IO::IOException^ e) {
+		catch (System::IO::IOException^) {
 			this->errorDialog->SetError(this->process, "Files already copied");
 		}
 	}
